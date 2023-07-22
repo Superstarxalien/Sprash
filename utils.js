@@ -64,6 +64,20 @@ export async function InstallGlobalCommands(appId, commands)
 	}
 }
 
+export async function ChangeUserRoles(guildId, userId, roleId)
+{
+	const endpoint = `guilds/${guildId}/members/${userId}/roles/${roleId}`;
+
+	try
+	{
+		// https://discord.com/developers/docs/resources/guild#add-guild-member-role
+		await DiscordRequest(endpoint, { method: 'PUT' });
+	} catch (err)
+	{
+		console.error(err);
+	}
+}
+
 export function capitalize(str)
 {
 	return str.charAt(0).toUpperCase() + str.slice(1);

@@ -8,7 +8,7 @@ import
 	MessageComponentTypes,
 	ButtonStyleTypes,
 } from 'discord-interactions';
-import { VerifyDiscordRequest, DiscordRequest } from './utils.js';
+import { VerifyDiscordRequest, DiscordRequest, ChangeUserRoles } from './utils.js';
 import { getRoleOptions } from "./roles.js"
 
 // Create an express app
@@ -87,11 +87,11 @@ app.post('/interactions', async function (req, res)
 
 		if (componentId == "rolethingyeah")
 		{
-			const member = req.body.member
-			const userId = member.user.id
-			const value = data.values[0]
+			const guild = req.body.guild_id
+			const userId = req.body.member.user.id
+			const role = data.values[0]
 
-			member.roles.push(value)
+			ChangeUserRoles(guild, userId, role)
 		}
 	}
 });
