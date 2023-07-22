@@ -4,14 +4,14 @@ const CrashRoles =
 	crash:
 	{
 		label: "Team Crash",
-		value: 1132130033637527622,
+		value: "1132130033637527622",
 		description: "I like Crash Bandicoot!",
 	},
 	// role id: 1132130177867055154
 	spyro:
 	{
 		label: "Team Spyro",
-		value: 1132130177867055154,
+		value: "1132130177867055154",
 		description: "I like Spyro the Dragon!",
 	},
 }
