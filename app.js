@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import express from 'express';
+import 'dotenv/config'
+import express from 'express'
 import
 {
 	InteractionType,
@@ -7,19 +7,16 @@ import
 	InteractionResponseFlags,
 	MessageComponentTypes,
 	ButtonStyleTypes,
-} from 'discord-interactions';
-import { VerifyDiscordRequest, DiscordRequest, ChangeUserRoles } from './utils.js';
+} from 'discord-interactions'
+import { VerifyDiscordRequest, DiscordRequest, ChangeUserRoles } from './utils.js'
 import { getRoleOptions } from "./roles.js"
 
 // Create an express app
-const app = express();
+const app = express()
 // Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 // Parse request body and verifies incoming requests using discord-interactions package
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
-
-// Store for in-progress games. In production, you'd want to use a DB
-// const activeGames = {};
+app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }))
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -27,14 +24,14 @@ app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 app.post('/interactions', async function (req, res)
 {
 	// Interaction type and data
-	const { type, id, data } = req.body;
+	const { type, id, data } = req.body
 
 	/**
 	 * Handle verification requests
 	 */
 	if (type === InteractionType.PING)
 	{
-		return res.send({ type: InteractionResponseType.PONG });
+		return res.send({ type: InteractionResponseType.PONG })
 	}
 
 	/**
@@ -43,37 +40,68 @@ app.post('/interactions', async function (req, res)
 	 */
 	if (type === InteractionType.APPLICATION_COMMAND)
 	{
-		const { name } = data;
+		const { name } = data
 
 		// generate role menu message
 		if (name === 'role_menu')
 		{
-			// Send a message into the channel where command was triggered from
-			return res.send
-			({
-				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-				data:
-				{
-					// Fetches a random emoji to send from a helper function
-					content: "hi",
-					components:
-					[
-						{
-							type: MessageComponentTypes.ACTION_ROW,
-							components:
-							[
-								{
-									type: MessageComponentTypes.STRING_SELECT,
-									min_values: 1,
-									max_values: 1,
-									custom_id: "rolethingyeah",
-									options: getRoleOptions(),
-								},
-							],
-						},
-					],
-				},
-			});
+			try
+			{
+				// Send a message into the channel where command was triggered from
+				await res.send
+				({
+					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+					data:
+					{
+						// Fetches a random emoji to send from a helper function
+						content: "crash roles:",
+						components:
+						[
+							{
+								type: MessageComponentTypes.ACTION_ROW,
+								components:
+								[
+									{
+										type: MessageComponentTypes.STRING_SELECT,
+										min_values: 1,
+										max_values: 1,
+										custom_id: "rolethingyeah",
+										options: getRoleOptions("crash"),
+									},
+								],
+							},
+						],
+					},
+				})
+				return res.send
+				({
+					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+					data:
+					{
+						// Fetches a random emoji to send from a helper function
+						content: "spyro roles:",
+						components:
+						[
+							{
+								type: MessageComponentTypes.ACTION_ROW,
+								components:
+								[
+									{
+										type: MessageComponentTypes.STRING_SELECT,
+										min_values: 1,
+										max_values: 1,
+										custom_id: "rolethingyeah",
+										options: getRoleOptions("spyro"),
+									},
+								],
+							},
+						],
+					},
+				})
+			} catch (err)
+			{
+				console.error("Error sending message:", err)
+			}
 		}
 	}
 
@@ -83,7 +111,7 @@ app.post('/interactions', async function (req, res)
 	*/
 	if (type === InteractionType.MESSAGE_COMPONENT)
 	{
-		const componentId = data.custom_id;
+		const componentId = data.custom_id
 
 		if (componentId == "rolethingyeah")
 		{
@@ -110,9 +138,9 @@ app.post('/interactions', async function (req, res)
 			}
 		}
 	}
-});
+})
 
 app.listen(PORT, () =>
 {
-	console.log('Listening on port', PORT);
-});
+	console.log('Listening on port', PORT)
+})

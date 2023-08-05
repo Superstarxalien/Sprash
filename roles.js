@@ -35,37 +35,44 @@ export function getRoles(roles)
 	return Object.keys(roles)
 }
 
-export function getRoleOptions()
+export function getRoleOptions(franchise)
 {
 	const crashroles = getRoles(CrashRoles)
 	const spyroroles = getRoles(SpyroRoles)
 	const options = []
 
-	for (let c of crashroles)
+	if (franchise == "crash")
 	{
-		// Formatted for select menus
-   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
-		options.push
-		(
-			{
-				label: CrashRoles[c]["label"],
-				value: CrashRoles[c]["value"],
-				description: CrashRoles[c]["description"],
-			}
-		)
+		for (let c of crashroles)
+		{
+			// Formatted for select menus
+	   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+			options.push
+			(
+				{
+					label: CrashRoles[c]["label"],
+					value: CrashRoles[c]["value"],
+					description: CrashRoles[c]["description"],
+				}
+			)
+		}
 	}
-	for (let c of spyroroles)
+
+	if (franchise == "spyro")
 	{
-		// Formatted for select menus
-   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
-		options.push
-		(
-			{
-				label: SpyroRoles[c]["label"],
-				value: SpyroRoles[c]["value"],
-				description: SpyroRoles[c]["description"],
-			}
-		)
+		for (let c of spyroroles)
+		{
+			// Formatted for select menus
+	   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+			options.push
+			(
+				{
+					label: SpyroRoles[c]["label"],
+					value: SpyroRoles[c]["value"],
+					description: SpyroRoles[c]["description"],
+				}
+			)
+		}
 	}
 
 	return options
