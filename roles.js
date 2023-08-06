@@ -77,3 +77,26 @@ export function getRoleOptions(franchise)
 
 	return options
 }
+
+export function getAllRoles()
+{
+	const crashroles = getRoles(CrashRoles)
+	const spyroroles = getRoles(SpyroRoles)
+	const options = []
+
+	for (let c of crashroles)
+	{
+		// Formatted for select menus
+   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+		options.push(CrashRoles[c]["value"])
+	}
+
+	for (let c of spyroroles)
+	{
+		// Formatted for select menus
+   		// https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+		options.push(SpyroRoles[c]["value"])
+	}
+
+	return options
+}

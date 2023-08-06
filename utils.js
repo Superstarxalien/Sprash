@@ -64,14 +64,21 @@ export async function InstallGlobalCommands(appId, commands)
 	}
 }
 
-export async function ChangeUserRoles(guildId, userId, roleId)
+export async function ChangeUserRoles(guildId, userId, roleId, mode)
 {
 	const endpoint = `guilds/${guildId}/members/${userId}/roles/${roleId}`;
 
 	try
 	{
 		// https://discord.com/developers/docs/resources/guild#add-guild-member-role
-		await DiscordRequest(endpoint, { method: 'PUT' });
+		if (mode == "remove")
+		{
+			await DiscordRequest(endpoint, { method: 'DELETE' });
+		}
+		else
+		{
+			await DiscordRequest(endpoint, { method: 'PUT' });
+		}
 	} catch (err)
 	{
 		console.error(err);

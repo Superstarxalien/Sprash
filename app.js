@@ -9,7 +9,7 @@ import
 	ButtonStyleTypes,
 } from 'discord-interactions'
 import { VerifyDiscordRequest, DiscordRequest, ChangeUserRoles } from './utils.js'
-import { getRoleOptions } from "./roles.js"
+import { getRoleOptions, getAllRoles } from "./roles.js"
 
 // Create an express app
 const app = express()
@@ -73,31 +73,6 @@ app.post('/interactions', async function (req, res)
 						],
 					},
 				})
-				return res.send
-				({
-					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-					data:
-					{
-						// Fetches a random emoji to send from a helper function
-						content: "spyro roles:",
-						components:
-						[
-							{
-								type: MessageComponentTypes.ACTION_ROW,
-								components:
-								[
-									{
-										type: MessageComponentTypes.STRING_SELECT,
-										min_values: 1,
-										max_values: 1,
-										custom_id: "rolethingyeah",
-										options: getRoleOptions("spyro"),
-									},
-								],
-							},
-						],
-					},
-				})
 			} catch (err)
 			{
 				console.error("Error sending message:", err)
@@ -116,8 +91,22 @@ app.post('/interactions', async function (req, res)
 		if (componentId == "rolethingyeah")
 		{
 			const guild = req.body.guild_id
-			const userId = req.body.member.user.id
+			const member = req.body.member
+			const userId = member.user.id
 			const role = data.values[0]
+
+			for(const thing of member.roles)
+			{
+				const allRoles = getAllRoles()
+
+				for(const a in allRoles)
+				{
+					if (thing == allRoles[a] && allRoles[a] != role)
+					{
+						ChangeUserRoles(guild, userId, thing, "remove")
+					}
+				}
+			}
 
 			ChangeUserRoles(guild, userId, role)
 
