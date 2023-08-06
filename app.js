@@ -43,7 +43,7 @@ app.post('/interactions', async function (req, res)
 		const { name } = data
 
 		// generate role menu message
-		if (name === 'role_menu')
+		if (name === 'roles_crash')
 		{
 			try
 			{
@@ -67,6 +67,81 @@ app.post('/interactions', async function (req, res)
 										max_values: 1,
 										custom_id: "rolethingyeah",
 										options: getRoleOptions("crash"),
+									},
+								],
+							},
+						],
+					},
+				})
+			} catch (err)
+			{
+				console.error("Error sending message:", err)
+			}
+		}
+		// generate role menu message
+		if (name === 'roles_spyro')
+		{
+			try
+			{
+				// Send a message into the channel where command was triggered from
+				await res.send
+				({
+					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+					data:
+					{
+						// Fetches a random emoji to send from a helper function
+						content: "spyro roles:",
+						components:
+						[
+							{
+								type: MessageComponentTypes.ACTION_ROW,
+								components:
+								[
+									{
+										type: MessageComponentTypes.STRING_SELECT,
+										min_values: 1,
+										max_values: 1,
+										custom_id: "rolethingyeah",
+										options: getRoleOptions("spyro"),
+									},
+								],
+							},
+						],
+					},
+				})
+			} catch (err)
+			{
+				console.error("Error sending message:", err)
+			}
+		}
+		// generate role buttons
+		if (name === 'roles_interest')
+		{
+			try
+			{
+				// Send a message into the channel where command was triggered from
+				await res.send
+				({
+					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+					data:
+					{
+						// Fetches a random emoji to send from a helper function
+						content: "are you interested in:",
+						components:
+						[
+							{
+								type: MessageComponentTypes.ACTION_ROW,
+								components:
+								[
+									{
+										type: MessageComponentTypes.BUTTON,
+										label: `Interested in Crash Bandicoot`,
+										custom_id: "interest_crash",
+									},
+									{
+										type: MessageComponentTypes.BUTTON,
+										label: `Interested in Spyro the Dragon`,
+										custom_id: "interest_spyro",
 									},
 								],
 							},
@@ -125,6 +200,54 @@ app.post('/interactions', async function (req, res)
 			{
 				console.error("Error sending message:", err)
 			}
+		}
+		if (componentId == "interest_crash")
+		{
+			const guild = req.body.guild_id
+			const member = req.body.member
+			const userId = member.user.id
+			const crash_role = "688048858919469112" // crash interest role
+			const spyro_role = "688050010965016671" // spyro interest role
+
+			for(const thing of member.roles)
+			{
+				if (thing == spyro_role)
+				{
+					ChangeUserRoles(guild, userId, spyro_role, "remove")
+					ChangeUserRoles(guild, userId, crash_role)
+					return
+				}
+				else if (thing == crash_role)
+				{
+					ChangeUserRoles(guild, userId, crash_role, "remove")
+					return
+				}
+			}
+			ChangeUserRoles(guild, userId, crash_role)
+		}
+		if (componentId == "interest_spyro")
+		{
+			const guild = req.body.guild_id
+			const member = req.body.member
+			const userId = member.user.id
+			const crash_role = "688048858919469112" // crash interest role
+			const spyro_role = "688050010965016671" // spyro interest role
+
+			for(const thing of member.roles)
+			{
+				if (thing == crash_role)
+				{
+					ChangeUserRoles(guild, userId, crash_role, "remove")
+					ChangeUserRoles(guild, userId, spyro_role)
+					return
+				}
+				else if (thing == spyro_role)
+				{
+					ChangeUserRoles(guild, userId, spyro_role, "remove")
+					return
+				}
+			}
+			ChangeUserRoles(guild, userId, spyro_role)
 		}
 	}
 })
