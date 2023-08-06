@@ -209,32 +209,10 @@ app.post('/interactions', async function (req, res)
 			const member = req.body.member
 			const userId = member.user.id
 			const crash_role = "688048858919469112" // crash interest role
-			const spyro_role = "688050010965016671" // spyro interest role
 
 			for(const thing of member.roles)
 			{
-				if (thing == spyro_role)
-				{
-					ChangeUserRoles(guild, userId, spyro_role, "remove")
-					ChangeUserRoles(guild, userId, crash_role)
-					try
-					{
-						res.send
-						({
-							type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-							data:
-							{
-								content: "there we go",
-								flags: InteractionResponseFlags.EPHEMERAL,
-							},
-						})
-					} catch (err)
-					{
-						console.error("Error sending message:", err)
-					}
-					return
-				}
-				else if (thing == crash_role)
+				if (thing == crash_role)
 				{
 					ChangeUserRoles(guild, userId, crash_role, "remove")
 					try
@@ -277,33 +255,11 @@ app.post('/interactions', async function (req, res)
 			const guild = req.body.guild_id
 			const member = req.body.member
 			const userId = member.user.id
-			const crash_role = "688048858919469112" // crash interest role
 			const spyro_role = "688050010965016671" // spyro interest role
 
 			for(const thing of member.roles)
 			{
-				if (thing == crash_role)
-				{
-					ChangeUserRoles(guild, userId, crash_role, "remove")
-					ChangeUserRoles(guild, userId, spyro_role)
-					try
-					{
-						res.send
-						({
-							type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-							data:
-							{
-								content: "there we go",
-								flags: InteractionResponseFlags.EPHEMERAL,
-							},
-						})
-					} catch (err)
-					{
-						console.error("Error sending message:", err)
-					}
-					return
-				}
-				else if (thing == spyro_role)
+				if (thing == spyro_role)
 				{
 					ChangeUserRoles(guild, userId, spyro_role, "remove")
 					try
